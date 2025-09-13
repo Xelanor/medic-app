@@ -55,7 +55,8 @@ interface ButtonLoadingProps {
   children: React.ReactNode
   loadingText?: string
   className?: string
-  [key: string]: unknown
+  disabled?: boolean
+  onClick?: () => void
 }
 
 export function ButtonWithLoading({
@@ -64,11 +65,11 @@ export function ButtonWithLoading({
   loadingText,
   className,
   disabled = false,
-  ...props
+  onClick
 }: ButtonLoadingProps) {
   return (
     <button
-      {...props}
+      onClick={onClick}
       disabled={disabled || loading}
       className={cn(
         "inline-flex items-center justify-center space-x-2",
