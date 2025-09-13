@@ -53,7 +53,7 @@ export default function AddPatientPage() {
         return
       }
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('patients')
         .insert([
           {
@@ -114,7 +114,7 @@ export default function AddPatientPage() {
             <CardHeader>
               <CardTitle>Patient Information</CardTitle>
               <CardDescription>
-                Enter the patient's details below. Fields marked with * are required.
+                Enter the patient&apos;s details below. Fields marked with * are required.
               </CardDescription>
             </CardHeader>
             <CardContent>

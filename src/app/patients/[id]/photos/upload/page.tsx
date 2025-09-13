@@ -107,7 +107,7 @@ export default function PhotoUploadPage({ params }: PhotoUploadPageProps) {
         const filePath = `medical-photos/${patient.id}/${fileName}`
 
         // Upload to Supabase Storage
-        const { data: uploadData, error: uploadError } = await supabase.storage
+        const { error: uploadError } = await supabase.storage
           .from('medical-photos')
           .upload(filePath, file)
 
@@ -238,7 +238,7 @@ export default function PhotoUploadPage({ params }: PhotoUploadPageProps) {
                   📷 Take Photo with Camera
                 </Button>
                 <p className="text-xs text-gray-500 mt-2">
-                  Use your device's camera to capture photos directly
+                  Use your device&apos;s camera to capture photos directly
                 </p>
               </div>
             </CardContent>

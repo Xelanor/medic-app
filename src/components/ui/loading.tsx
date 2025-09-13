@@ -55,7 +55,7 @@ interface ButtonLoadingProps {
   children: React.ReactNode
   loadingText?: string
   className?: string
-  [key: string]: any
+  [key: string]: unknown
 }
 
 export function ButtonWithLoading({
