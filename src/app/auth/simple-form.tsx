@@ -46,14 +46,14 @@ export function SimpleAuthForm() {
     if (isLogin) {
       const { error } = await signIn(formData.email, formData.password)
       if (error) {
-        setMessage(error.message)
+        setMessage(typeof error === 'object' && error && 'message' in error ? String(error.message) : 'Login failed')
       } else {
         router.push('/dashboard')
       }
     } else {
       const { error } = await signUp(formData.email, formData.password, formData.fullName)
       if (error) {
-        setMessage(error.message)
+        setMessage(typeof error === 'object' && error && 'message' in error ? String(error.message) : 'Registration failed')
       } else {
         setMessage('Registration successful! Please wait for admin approval to access your account.')
       }
