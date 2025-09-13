@@ -74,6 +74,6 @@ export const runDatabaseMigration = async () => {
 
   } catch (error) {
     console.error('💥 Migration failed:', error)
-    return { success: false, error: error.message || 'Unknown error occurred' }
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error occurred' }
   }
 }
