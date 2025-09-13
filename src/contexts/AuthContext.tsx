@@ -33,6 +33,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(
       async (event: AuthChangeEvent, session: Session | null) => {
+        if (session?.user) {
+          // Check user role when session changes
+          const userRole = session.user.user_metadata?.role
+          if (userRole !== 'doctor') {
+            // Sign out users without doctor role
+            await supabase.auth.signOut()
+            setSession(null)
+            setUser(null)
+            setLoading(false)
+            return
+          }
+        }
+
         setSession(session)
         setUser(session?.user ?? null)
         setLoading(false)
@@ -50,7 +63,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         options: {
           data: {
             full_name: fullName,
-            role: 'doctor'
+            role: 'pending' // Default role is pending, admin will change to 'doctor'
           }
         }
       })
@@ -63,12 +76,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = async (email: string, password: string) => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
       })
 
-      return { error }
+      if (error) {
+        return { error }
+      }
+
+      // Check if user has doctor role
+      const userRole = data.user?.user_metadata?.role
+      if (userRole !== 'doctor') {
+        // Sign out the user immediately
+        await supabase.auth.signOut()
+        return {
+          error: {
+            message: 'Sisteme erişim yetkiniz yok. Sadece doktor rolüne sahip kullanıcılar giriş yapabilir.'
+          }
+        }
+      }
+
+      return { error: null }
     } catch (error) {
       return { error }
     }

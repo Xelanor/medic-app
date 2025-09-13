@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Medical Records System",
-  description: "Secure patient data and photo management system for healthcare professionals",
+  title: "Tıbbi Kayıt Sistemi",
+  description: "Sağlık profesyonelleri için güvenli hasta verisi ve fotoğraf yönetim sistemi",
 };
 
 export default function RootLayout({
