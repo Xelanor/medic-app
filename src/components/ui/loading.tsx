@@ -63,7 +63,7 @@ export function ButtonWithLoading({
   children,
   loadingText,
   className,
-  disabled,
+  disabled = false,
   ...props
 }: ButtonLoadingProps) {
   return (
