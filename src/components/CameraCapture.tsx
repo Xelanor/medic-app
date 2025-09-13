@@ -86,12 +86,16 @@ export function CameraCapture({ onPhotoCapture, onClose }: CameraCaptureProps) {
     } catch (err) {
       console.error('Camera access error:', err)
       setIsStreaming(false)
-      if (err.name === 'NotAllowedError') {
-        setError('Camera access denied. Please allow camera permissions and try again.')
-      } else if (err.name === 'NotFoundError') {
-        setError('No camera found on this device.')
+      if (err instanceof Error) {
+        if (err.name === 'NotAllowedError') {
+          setError('Camera access denied. Please allow camera permissions and try again.')
+        } else if (err.name === 'NotFoundError') {
+          setError('No camera found on this device.')
+        } else {
+          setError('Could not access camera: ' + err.message)
+        }
       } else {
-        setError('Could not access camera: ' + err.message)
+        setError('Could not access camera: Unknown error')
       }
     }
   }
