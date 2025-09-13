@@ -12,7 +12,7 @@ export default function AuthPage() {
             Medical Records System
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            {isLogin ? 'Sign in to your account' : 'Register as a healthcare professional'}
+            Access the medical records system
           </p>
         </div>
 
