@@ -134,7 +134,7 @@ export default function PhotoGalleryPage({ params }: PhotoGalleryPageProps) {
       setMessage('Photo deleted successfully')
 
     } catch (error) {
-      setMessage(`Delete failed: ${error.message}`)
+      setMessage(`Delete failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
     }
   }
 
