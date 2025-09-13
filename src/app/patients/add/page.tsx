@@ -40,7 +40,7 @@ export default function AddPatientPage() {
     try {
       // Validate required fields
       if (!formData.full_name || !formData.age || !formData.file_number) {
-        setMessage('Please fill in all required fields (Full Name, Age, File Number)')
+        setMessage('Lütfen tüm zorunlu alanları doldurun (Ad Soyad, Yaş, Dosya Numarası)')
         setLoading(false)
         return
       }
@@ -48,7 +48,7 @@ export default function AddPatientPage() {
       // Convert age to number
       const ageNumber = parseInt(formData.age)
       if (isNaN(ageNumber) || ageNumber <= 0) {
-        setMessage('Please enter a valid age')
+        setMessage('Lütfen geçerli bir yaş girin')
         setLoading(false)
         return
       }
@@ -71,12 +71,12 @@ export default function AddPatientPage() {
 
       if (error) {
         if (error.code === '23505') { // Unique constraint violation
-          setMessage('File number already exists. Please use a different file number.')
+          setMessage('Dosya numarası zaten mevcut. Lütfen farklı bir dosya numarası kullanın.')
         } else {
           setMessage(error.message)
         }
       } else {
-        setMessage('Patient added successfully!')
+        setMessage('Hasta başarıyla eklendi!')
         // Reset form
         setFormData({
           full_name: '',
@@ -91,7 +91,7 @@ export default function AddPatientPage() {
         }, 1000)
       }
     } catch (error) {
-      setMessage('An error occurred while adding the patient')
+      setMessage('Hasta eklenirken bir hata oluştu')
     }
 
     setLoading(false)
@@ -100,11 +100,11 @@ export default function AddPatientPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <PageHeader
-        title="Add New Patient"
-        subtitle="Register a new patient in the system"
+        title="Yeni Hasta Ekle"
+        subtitle="Sisteme yeni hasta kaydı yapın"
       >
         <Button onClick={() => router.push('/patients')} variant="outline">
-          View All Patients
+          Tüm Hastaları Görüntüle
         </Button>
       </PageHeader>
 
@@ -112,19 +112,19 @@ export default function AddPatientPage() {
         <div className="px-4 py-6 sm:px-0">
           <Card>
             <CardHeader>
-              <CardTitle>Patient Information</CardTitle>
+              <CardTitle>Hasta Bilgileri</CardTitle>
               <CardDescription>
-                Enter the patient&apos;s details below. Fields marked with * are required.
+                Aşağıda hasta bilgilerini girin. * ile işaretli alanlar zorunludur.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
-                  <Label htmlFor="full_name">Full Name *</Label>
+                  <Label htmlFor="full_name">Ad Soyad *</Label>
                   <Input
                     id="full_name"
                     type="text"
-                    placeholder="Enter patient's full name"
+                    placeholder="Hastanın ad soyadını girin"
                     value={formData.full_name}
                     onChange={(e) => handleInputChange('full_name', e.target.value)}
                     required
@@ -133,11 +133,11 @@ export default function AddPatientPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="age">Age *</Label>
+                    <Label htmlFor="age">Yaş *</Label>
                     <Input
                       id="age"
                       type="number"
-                      placeholder="Enter patient's age"
+                      placeholder="Hastanın yaşını girin"
                       value={formData.age}
                       onChange={(e) => handleInputChange('age', e.target.value)}
                       min="0"
@@ -147,11 +147,11 @@ export default function AddPatientPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="file_number">File Number *</Label>
+                    <Label htmlFor="file_number">Dosya Numarası *</Label>
                     <Input
                       id="file_number"
                       type="text"
-                      placeholder="Enter unique file number"
+                      placeholder="Benzersiz dosya numarası girin"
                       value={formData.file_number}
                       onChange={(e) => handleInputChange('file_number', e.target.value)}
                       required
@@ -160,25 +160,25 @@ export default function AddPatientPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="gender">Gender</Label>
+                  <Label htmlFor="gender">Cinsiyet</Label>
                   <select
                     id="gender"
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                     value={formData.gender}
                     onChange={(e) => handleInputChange('gender', e.target.value)}
                   >
-                    <option value="">Select gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
+                    <option value="">Cinsiyet seçin</option>
+                    <option value="Erkek">Erkek</option>
+                    <option value="Kadın">Kadın</option>
+                    <option value="Diğer">Diğer</option>
                   </select>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="additional_notes">Additional Notes</Label>
+                  <Label htmlFor="additional_notes">Ek Notlar</Label>
                   <Textarea
                     id="additional_notes"
-                    placeholder="Enter any additional notes about the patient"
+                    placeholder="Hasta hakkında ek notlar girin"
                     value={formData.additional_notes}
                     onChange={(e) => handleInputChange('additional_notes', e.target.value)}
                     rows={4}
@@ -199,7 +199,7 @@ export default function AddPatientPage() {
                   <Button type="submit" className="flex-1" disabled={loading}>
                     <div className="flex items-center space-x-2">
                       {loading && <LoadingSpinner size="sm" />}
-                      <span>{loading ? 'Adding Patient...' : 'Add Patient'}</span>
+                      <span>{loading ? 'Hasta ekleniyor...' : 'Hasta Ekle'}</span>
                     </div>
                   </Button>
                   <Button
@@ -208,7 +208,7 @@ export default function AddPatientPage() {
                     onClick={() => router.push('/patients')}
                     disabled={loading}
                   >
-                    View All Patients
+                    Tüm Hastaları Görüntüle
                   </Button>
                 </div>
               </form>

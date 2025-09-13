@@ -55,7 +55,7 @@ export function SimpleAuthForm() {
       if (error) {
         setMessage(typeof error === 'object' && error && 'message' in error ? String(error.message) : 'Registration failed')
       } else {
-        setMessage('Registration successful! Please wait for admin approval to access your account.')
+        setMessage('Kayıt başarılı! Hesabınıza erişmek için yönetici onayını bekleyin.')
       }
     }
 
@@ -65,11 +65,11 @@ export function SimpleAuthForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{isLogin ? 'Sign In' : 'Register'}</CardTitle>
+        <CardTitle>{isLogin ? 'Giriş Yap' : 'Kayıt Ol'}</CardTitle>
         <CardDescription>
           {isLogin
-            ? 'Enter your credentials to access the system'
-            : 'Create an account to access patient records'
+            ? 'Sisteme erişmek için bilgilerinizi girin'
+            : 'Hasta kayıtlarına erişmek için hesap oluşturun'
           }
         </CardDescription>
       </CardHeader>
@@ -77,11 +77,11 @@ export function SimpleAuthForm() {
         <form onSubmit={handleSubmit} className="space-y-4">
           {!isLogin && (
             <div className="space-y-2">
-              <Label htmlFor="fullName">Full Name</Label>
+              <Label htmlFor="fullName">Ad Soyad</Label>
               <Input
                 id="fullName"
                 type="text"
-                placeholder="Dr. John Smith"
+                placeholder="Dr. Ahmet Yılmaz"
                 value={formData.fullName}
                 onChange={(e) => handleInputChange('fullName', e.target.value)}
               />
@@ -89,22 +89,22 @@ export function SimpleAuthForm() {
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">E-posta</Label>
             <Input
               id="email"
               type="email"
-              placeholder="doctor@hospital.com"
+              placeholder="doktor@hastane.com"
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">Şifre</Label>
             <Input
               id="password"
               type="password"
-              placeholder={isLogin ? "Enter your password" : "Create a password"}
+              placeholder={isLogin ? "Şifrenizi girin" : "Şifre oluşturun"}
               value={formData.password}
               onChange={(e) => handleInputChange('password', e.target.value)}
             />
@@ -123,8 +123,8 @@ export function SimpleAuthForm() {
               {loading && <LoadingSpinner size="sm" />}
               <span>
                 {loading
-                  ? (isLogin ? 'Signing in...' : 'Creating account...')
-                  : (isLogin ? 'Sign In' : 'Register')
+                  ? (isLogin ? 'Giriş yapılıyor...' : 'Hesap oluşturuluyor...')
+                  : (isLogin ? 'Giriş Yap' : 'Kayıt Ol')
                 }
               </span>
             </div>
@@ -138,8 +138,8 @@ export function SimpleAuthForm() {
             onClick={handleToggle}
           >
             {isLogin
-              ? "Don't have an account? Register here"
-              : "Already have an account? Sign in"
+              ? "Hesabınız yok mu? Buradan kayıt olun"
+              : "Zaten hesabınız var mı? Giriş yapın"
             }
           </button>
         </div>

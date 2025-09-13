@@ -9,10 +9,10 @@ export default function AuthPage() {
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
-            Medical Records System
+            Tıbbi Kayıt Sistemi
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Access the medical records system
+            Tıbbi kayıt sistemine erişin
           </p>
         </div>
 

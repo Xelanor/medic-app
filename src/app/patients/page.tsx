@@ -33,12 +33,12 @@ export default function PatientsPage() {
         .order('created_at', { ascending: false })
 
       if (error) {
-        setMessage('Error loading patients: ' + error.message)
+        setMessage('Hastalar yüklenirken hata: ' + error.message)
       } else {
         setPatients(data || [])
       }
     } catch (error) {
-      setMessage('An error occurred while loading patients')
+      setMessage('Hastalar yüklenirken bir hata oluştu')
     } finally {
       setLoading(false)
     }
@@ -58,17 +58,17 @@ export default function PatientsPage() {
   }
 
   if (loading) {
-    return <FullPageLoading message="Loading patients..." />
+    return <FullPageLoading message="Hastalar yükleniyor..." />
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
       <PageHeader
-        title="Patients"
-        subtitle={`Manage patient records (${patients.length} total patients)`}
+        title="Hastalar"
+        subtitle={`Hasta kayıtlarını yönetin (${patients.length} toplam hasta)`}
       >
         <Button onClick={() => router.push('/patients/add')}>
-          Add New Patient
+          Yeni Hasta Ekle
         </Button>
       </PageHeader>
 
@@ -82,13 +82,13 @@ export default function PatientsPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Patient Directory</CardTitle>
+              <CardTitle>Hasta Dizini</CardTitle>
               <CardDescription>
-                Search and view all registered patients
+                Kayıtlı tüm hastaları arayın ve görüntüleyin
               </CardDescription>
               <div className="mt-4">
                 <Input
-                  placeholder="Search by name or file number..."
+                  placeholder="Ad veya dosya numarasına göre ara..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="max-w-sm"
@@ -99,12 +99,12 @@ export default function PatientsPage() {
               {filteredPatients.length === 0 ? (
                 <div className="text-center py-8 text-gray-500">
                   {searchTerm
-                    ? `No patients found matching "${searchTerm}"`
-                    : 'No patients registered yet'
+                    ? `"${searchTerm}" ile eşleşen hasta bulunamadı`
+                    : 'Henüz kayıtlı hasta yok'
                   }
                   <div className="mt-4">
                     <Button onClick={() => router.push('/patients/add')}>
-                      Add First Patient
+                      İlk Hastayı Ekle
                     </Button>
                   </div>
                 </div>
@@ -113,13 +113,13 @@ export default function PatientsPage() {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>File Number</TableHead>
-                        <TableHead>Full Name</TableHead>
-                        <TableHead>Age</TableHead>
-                        <TableHead>Gender</TableHead>
-                        <TableHead>Created By</TableHead>
-                        <TableHead>Created</TableHead>
-                        <TableHead>Actions</TableHead>
+                        <TableHead>Dosya No</TableHead>
+                        <TableHead>Ad Soyad</TableHead>
+                        <TableHead>Yaş</TableHead>
+                        <TableHead>Cinsiyet</TableHead>
+                        <TableHead>Kaydeden</TableHead>
+                        <TableHead>Oluşturulma</TableHead>
+                        <TableHead>İşlemler</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -133,12 +133,12 @@ export default function PatientsPage() {
                             {patient.file_number}
                           </TableCell>
                           <TableCell>{patient.full_name}</TableCell>
-                          <TableCell>{patient.age} years</TableCell>
-                          <TableCell>{patient.gender || 'Not specified'}</TableCell>
+                          <TableCell>{patient.age} yaş</TableCell>
+                          <TableCell>{patient.gender || 'Belirtilmemiş'}</TableCell>
                           <TableCell>
                             <div className="text-sm">
                               <div className="font-medium">
-                                {patient.created_by_doctor_name || 'Unknown Doctor'}
+                                {patient.created_by_doctor_name || 'Bilinmeyen Doktor'}
                               </div>
                               <div className="text-gray-500">
                                 {patient.created_by_doctor_email}
@@ -146,7 +146,7 @@ export default function PatientsPage() {
                             </div>
                           </TableCell>
                           <TableCell>
-                            {new Date(patient.created_at).toLocaleDateString()}
+                            {new Date(patient.created_at).toLocaleDateString('tr-TR')}
                           </TableCell>
                           <TableCell>
                             <Button
@@ -157,7 +157,7 @@ export default function PatientsPage() {
                                 handlePatientClick(patient.id)
                               }}
                             >
-                              View Details
+                              Detayları Gör
                             </Button>
                           </TableCell>
                         </TableRow>

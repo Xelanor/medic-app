@@ -109,15 +109,15 @@ export default function PatientDetailPage({ params }: PatientDetailPageProps) {
   }, [patientId])
 
   if (loading) {
-    return <FullPageLoading message="Loading patient details..." />
+    return <FullPageLoading message="Hasta detayları yükleniyor..." />
   }
 
   if (message || !patient) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <PageHeader title="Patient Not Found">
+        <PageHeader title="Hasta Bulunamadı">
           <Button onClick={() => router.push('/patients')} variant="outline">
-            Back to Patients
+            Hastalara Geri Dön
           </Button>
         </PageHeader>
         <main className="max-w-2xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -125,9 +125,9 @@ export default function PatientDetailPage({ params }: PatientDetailPageProps) {
             <Card>
               <CardContent className="pt-6">
                 <div className="text-center">
-                  <p className="text-red-600 mb-4">{message || 'Patient not found'}</p>
+                  <p className="text-red-600 mb-4">{message || 'Hasta bulunamadı'}</p>
                   <Button onClick={() => router.push('/patients')}>
-                    Return to Patients List
+                    Hasta Listesine Dön
                   </Button>
                 </div>
               </CardContent>
@@ -142,13 +142,13 @@ export default function PatientDetailPage({ params }: PatientDetailPageProps) {
     <div className="min-h-screen bg-gray-50">
       <PageHeader
         title={patient.full_name}
-        subtitle={`File Number: ${patient.file_number}`}
+        subtitle={`Dosya Numarası: ${patient.file_number}`}
       >
         <Button onClick={() => router.push(`/patients/${patient.id}/edit`)}>
-          Edit Patient
+          Hastayı Düzenle
         </Button>
         <Button onClick={() => router.push('/patients')} variant="outline">
-          Back to Patients
+          Hastalara Geri Dön
         </Button>
       </PageHeader>
 
@@ -158,39 +158,39 @@ export default function PatientDetailPage({ params }: PatientDetailPageProps) {
             {/* Patient Information */}
             <Card>
               <CardHeader>
-                <CardTitle>Patient Information</CardTitle>
+                <CardTitle>Hasta Bilgileri</CardTitle>
                 <CardDescription>
-                  Basic details about the patient
+                  Hasta hakkında temel bilgiler
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-700">Full Name</label>
+                  <label className="text-sm font-medium text-gray-700">Ad Soyad</label>
                   <p className="text-lg font-semibold">{patient.full_name}</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="text-sm font-medium text-gray-700">Age</label>
-                    <p className="text-lg">{patient.age} years</p>
+                    <label className="text-sm font-medium text-gray-700">Yaş</label>
+                    <p className="text-lg">{patient.age} yaş</p>
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-gray-700">Gender</label>
-                    <p className="text-lg">{patient.gender || 'Not specified'}</p>
+                    <label className="text-sm font-medium text-gray-700">Cinsiyet</label>
+                    <p className="text-lg">{patient.gender || 'Belirtilmemiş'}</p>
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium text-gray-700">File Number</label>
+                  <label className="text-sm font-medium text-gray-700">Dosya Numarası</label>
                   <p className="text-lg font-mono bg-gray-100 px-2 py-1 rounded">
                     {patient.file_number}
                   </p>
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium text-gray-700">Registration Date</label>
+                  <label className="text-sm font-medium text-gray-700">Kayıt Tarihi</label>
                   <p className="text-lg">
-                    {new Date(patient.created_at).toLocaleDateString('en-US', {
+                    {new Date(patient.created_at).toLocaleDateString('tr-TR', {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric'
@@ -199,10 +199,10 @@ export default function PatientDetailPage({ params }: PatientDetailPageProps) {
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium text-gray-700">Created By</label>
+                  <label className="text-sm font-medium text-gray-700">Kaydeden Doktor</label>
                   <div className="mt-1 p-3 bg-blue-50 rounded-md">
                     <p className="font-medium text-blue-900">
-                      {patient.created_by_doctor_name || 'Unknown Doctor'}
+                      {patient.created_by_doctor_name || 'Bilinmeyen Doktor'}
                     </p>
                     {patient.created_by_doctor_email && (
                       <p className="text-sm text-blue-700">
@@ -214,7 +214,7 @@ export default function PatientDetailPage({ params }: PatientDetailPageProps) {
 
                 {patient.additional_notes && (
                   <div>
-                    <label className="text-sm font-medium text-gray-700">Additional Notes</label>
+                    <label className="text-sm font-medium text-gray-700">Ek Notlar</label>
                     <div className="mt-1 p-3 bg-gray-50 rounded-md">
                       <p className="text-sm whitespace-pre-wrap">{patient.additional_notes}</p>
                     </div>

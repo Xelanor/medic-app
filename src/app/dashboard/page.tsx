@@ -19,7 +19,7 @@ export default function Dashboard() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-lg">Loading...</div>
+        <div className="text-lg">Yükleniyor...</div>
       </div>
     )
   }
@@ -40,14 +40,14 @@ export default function Dashboard() {
           <div className="flex justify-between items-center py-6">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
-                Medical Records Dashboard
+                Tıbbi Kayıt Paneli
               </h1>
               <p className="text-sm text-gray-600">
-                Welcome, {user.user_metadata?.full_name || user.email}
+                Hoş geldiniz, {user.user_metadata?.full_name || user.email}
               </p>
             </div>
             <Button onClick={handleSignOut} variant="outline">
-              Sign Out
+              Çıkış Yap
             </Button>
           </div>
         </div>
@@ -58,42 +58,42 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>Patients</CardTitle>
+                <CardTitle>Hastalar</CardTitle>
                 <CardDescription>
-                  Manage patient records and information
+                  Hasta kayıtlarını ve bilgilerini yönetin
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <Button className="w-full" onClick={() => router.push('/patients')}>
-                  View Patients
+                  Hastaları Görüntüle
                 </Button>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>Add New Patient</CardTitle>
+                <CardTitle>Yeni Hasta Ekle</CardTitle>
                 <CardDescription>
-                  Register a new patient in the system
+                  Sisteme yeni hasta kaydı yapın
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <Button className="w-full" onClick={() => router.push('/patients/add')}>
-                  Add Patient
+                  Hasta Ekle
                 </Button>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>Medical Photos</CardTitle>
+                <CardTitle>Tıbbi Fotoğraflar</CardTitle>
                 <CardDescription>
-                  Upload and manage medical photos
+                  Tıbbi fotoğrafları yükleyin ve yönetin
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <Button className="w-full">
-                  Manage Photos
+                  Fotoğrafları Yönet
                 </Button>
               </CardContent>
             </Card>
@@ -102,14 +102,14 @@ export default function Dashboard() {
           <div className="mt-8">
             <Card>
               <CardHeader>
-                <CardTitle>Recent Activity</CardTitle>
+                <CardTitle>Son Aktiviteler</CardTitle>
                 <CardDescription>
-                  Latest patient records and updates
+                  En son hasta kayıtları ve güncellemeler
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="text-center py-8 text-gray-500">
-                  No recent activity to display
+                  Görüntülenecek son aktivite yok
                 </div>
               </CardContent>
             </Card>
