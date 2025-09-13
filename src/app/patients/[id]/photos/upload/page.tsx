@@ -150,7 +150,7 @@ export default function PhotoUploadPage({ params }: PhotoUploadPageProps) {
       }, 2000)
 
     } catch (error) {
-      setMessage(`Upload failed: ${error.message}`)
+      setMessage(`Upload failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
     } finally {
       setLoading(false)
     }
