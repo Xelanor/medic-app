@@ -11,7 +11,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/contexts/AuthContext'
 import { Patient } from '@/types/database'
-import { CameraCapture } from '@/components/CameraCapture'
 import { PageHeader } from '@/components/PageHeader'
 import { FullPageLoading, LoadingSpinner } from '@/components/ui/loading'
 
@@ -31,7 +30,6 @@ export default function PhotoUploadPage({ params }: PhotoUploadPageProps) {
     description: '',
     photo_type: 'general'
   })
-  const [showCamera, setShowCamera] = useState(false)
   const router = useRouter()
   const { user } = useAuth()
 
@@ -160,10 +158,6 @@ export default function PhotoUploadPage({ params }: PhotoUploadPageProps) {
     setUploadedFiles(files => files.filter((_, index) => index !== indexToRemove))
   }
 
-  const handleCameraCapture = (file: File) => {
-    setUploadedFiles(files => [...files, file])
-    setMessage('')
-  }
 
   if (!patient) {
     return <FullPageLoading message="Loading patient..." />
@@ -182,19 +176,18 @@ export default function PhotoUploadPage({ params }: PhotoUploadPageProps) {
 
       <main className="max-w-2xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0 space-y-6">
-          {/* Photo Input Options */}
+          {/* File Upload Area */}
           <Card>
             <CardHeader>
-              <CardTitle>Add Photos</CardTitle>
+              <CardTitle>Select Photos</CardTitle>
               <CardDescription>
-                Upload photos from your device or take photos with your camera
+                Upload medical photos for this patient. Drag and drop or click to select files.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              {/* Upload from Files */}
+            <CardContent>
               <div
                 {...getRootProps()}
-                className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${
+                className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
                   isDragActive
                     ? 'border-blue-400 bg-blue-50'
                     : 'border-gray-300 hover:border-gray-400'
@@ -203,7 +196,7 @@ export default function PhotoUploadPage({ params }: PhotoUploadPageProps) {
                 <input {...getInputProps()} />
                 <div className="space-y-2">
                   <svg
-                    className="mx-auto h-10 w-10 text-gray-400"
+                    className="mx-auto h-12 w-12 text-gray-400"
                     stroke="currentColor"
                     fill="none"
                     viewBox="0 0 48 48"
@@ -216,30 +209,14 @@ export default function PhotoUploadPage({ params }: PhotoUploadPageProps) {
                     />
                   </svg>
                   <div>
-                    <p className="font-medium">
-                      {isDragActive ? 'Drop the files here' : 'Upload from Device'}
+                    <p className="text-lg font-medium">
+                      {isDragActive ? 'Drop the files here' : 'Drag photos here or click to select'}
                     </p>
                     <p className="text-sm text-gray-500">
-                      Drag & drop or click to select files
+                      Supports: JPEG, PNG, GIF, WebP (max 10MB each)
                     </p>
                   </div>
                 </div>
-              </div>
-
-              {/* Camera Option */}
-              <div className="text-center">
-                <div className="text-sm text-gray-500 mb-3">OR</div>
-                <Button
-                  onClick={() => setShowCamera(true)}
-                  variant="outline"
-                  size="lg"
-                  className="w-full"
-                >
-                  📷 Take Photo with Camera
-                </Button>
-                <p className="text-xs text-gray-500 mt-2">
-                  Use your device&apos;s camera to capture photos directly
-                </p>
               </div>
             </CardContent>
           </Card>
@@ -356,14 +333,6 @@ export default function PhotoUploadPage({ params }: PhotoUploadPageProps) {
             }`}>
               {message}
             </div>
-          )}
-
-          {/* Camera Modal */}
-          {showCamera && (
-            <CameraCapture
-              onPhotoCapture={handleCameraCapture}
-              onClose={() => setShowCamera(false)}
-            />
           )}
         </div>
       </main>
