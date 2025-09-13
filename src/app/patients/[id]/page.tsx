@@ -23,8 +23,10 @@ export default function PatientDetailPage({ params }: PatientDetailPageProps) {
   const [patient, setPatient] = useState<Patient | null>(null)
   const [photos, setPhotos] = useState<PhotoWithUrl[]>([])
   const [loading, setLoading] = useState(true)
+  const [deleting, setDeleting] = useState(false)
   const [message, setMessage] = useState('')
   const [patientId, setPatientId] = useState<string>('')
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -108,6 +110,62 @@ export default function PatientDetailPage({ params }: PatientDetailPageProps) {
     fetchPatient()
   }, [patientId])
 
+  const deletePatient = async () => {
+    if (!patient) return
+
+    setDeleting(true)
+    setMessage('')
+
+    try {
+      // First delete all related photos from storage and database
+      const { data: patientPhotos } = await supabase
+        .from('medical_photos')
+        .select('file_path')
+        .eq('patient_id', patient.id)
+
+      if (patientPhotos && patientPhotos.length > 0) {
+        // Delete photos from storage
+        const filePaths = patientPhotos.map(photo => photo.file_path)
+        await supabase.storage
+          .from('medical-photos')
+          .remove(filePaths)
+
+        // Delete photo records from database
+        await supabase
+          .from('medical_photos')
+          .delete()
+          .eq('patient_id', patient.id)
+      }
+
+      // Delete medical records
+      await supabase
+        .from('medical_records')
+        .delete()
+        .eq('patient_id', patient.id)
+
+      // Finally delete the patient
+      const { error } = await supabase
+        .from('patients')
+        .delete()
+        .eq('id', patient.id)
+
+      if (error) {
+        setMessage('Hasta silinirken hata oluştu: ' + error.message)
+      } else {
+        setMessage('Hasta başarıyla silindi')
+        // Redirect to patients list after 1 second
+        setTimeout(() => {
+          router.push('/patients')
+        }, 1000)
+      }
+    } catch (error) {
+      setMessage('Hasta silinirken bir hata oluştu')
+    } finally {
+      setDeleting(false)
+      setShowDeleteConfirm(false)
+    }
+  }
+
   if (loading) {
     return <FullPageLoading message="Hasta detayları yükleniyor..." />
   }
@@ -146,6 +204,13 @@ export default function PatientDetailPage({ params }: PatientDetailPageProps) {
       >
         <Button onClick={() => router.push(`/patients/${patient.id}/edit`)}>
           Hastayı Düzenle
+        </Button>
+        <Button
+          onClick={() => setShowDeleteConfirm(true)}
+          variant="destructive"
+          disabled={deleting}
+        >
+          {deleting ? 'Siliniyor...' : 'Hastayı Sil'}
         </Button>
         <Button onClick={() => router.push('/patients')} variant="outline">
           Hastalara Geri Dön
@@ -363,6 +428,64 @@ export default function PatientDetailPage({ params }: PatientDetailPageProps) {
           </div>
         </div>
       </main>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <Card className="max-w-md w-full">
+            <CardHeader>
+              <CardTitle className="text-red-600">Hastayı Sil</CardTitle>
+              <CardDescription>
+                Bu işlem geri alınamaz. Hasta ve tüm ilgili veriler silinecek.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="bg-yellow-50 border border-yellow-200 rounded-md p-3">
+                  <div className="flex items-start">
+                    <svg className="w-5 h-5 text-yellow-600 mt-0.5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                    <div>
+                      <h4 className="text-sm font-medium text-yellow-800">
+                        Silinecek veriler:
+                      </h4>
+                      <ul className="text-sm text-yellow-700 mt-1 space-y-1">
+                        <li>• Hasta bilgileri</li>
+                        <li>• Tıbbi fotoğraflar ({photos.length} adet)</li>
+                        <li>• Tıbbi kayıtlar</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <p className="text-sm text-gray-600">
+                  <strong>{patient.full_name}</strong> adlı hastayı silmek istediğinizden emin misiniz?
+                </p>
+
+                <div className="flex gap-3">
+                  <Button
+                    onClick={deletePatient}
+                    variant="destructive"
+                    disabled={deleting}
+                    className="flex-1"
+                  >
+                    {deleting ? 'Siliniyor...' : 'Evet, Sil'}
+                  </Button>
+                  <Button
+                    onClick={() => setShowDeleteConfirm(false)}
+                    variant="outline"
+                    disabled={deleting}
+                    className="flex-1"
+                  >
+                    İptal
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   )
 }
